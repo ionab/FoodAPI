@@ -40,10 +40,19 @@ MongoClient.connect("mongodb://localhost/27017", function(err, client){
       res.json(chocolateCollection);
     });
   });
-  //delete
+  //delete all
   server.delete("/api/chocolate", function(req, res, next){
     const chocolateCollection = db.collection("chocolate");
     chocolateCollection.remove({}, function(err, result){
+      if (err) next(err);
+      res.status(200).send();
+    });
+  });
+  //delete one
+  server.delete("/api/chocolate/:id", function(req, res, next){
+    const chocolateCollection = db.collection("chocolate");
+    const objectID = ObjectID(req.params.id);
+    chocolateCollection.remove({_id: objectID}, function(err, result){
       if (err) next(err);
       res.status(200).send();
     });
